@@ -4,10 +4,12 @@
  * This generated file contains a sample Java application project to get you started.
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.3/userguide/building_java_projects.html in the Gradle documentation.
  */
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
 plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     application
+    id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
 repositories {
@@ -25,7 +27,7 @@ dependencies {
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
     implementation("com.sparkjava:spark-core:2.3")
-    implementation("com.google.code.gson:gson:2.8.8")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -43,4 +45,20 @@ application {
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+}
+
+tasks {
+    named<ShadowJar>("shadowJar") {
+        archiveBaseName.set("shadow")
+        mergeServiceFiles()
+        manifest {
+            attributes(mapOf("Main-Class" to "factor.apps.App"))
+        }
+    }
+}
+
+tasks {
+    build {
+        dependsOn(shadowJar)
+    }
 }
