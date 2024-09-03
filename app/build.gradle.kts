@@ -26,7 +26,7 @@ dependencies {
 
     // This dependency is used by the application.
     implementation("com.google.guava:guava:32.1.1-jre")
-    implementation("com.sparkjava:spark-core:2.3")
+    implementation("com.sparkjava:spark-core:2.9.3")
     implementation("com.google.code.gson:gson:2.10.1")
 }
 
@@ -42,9 +42,20 @@ application {
     mainClass.set("factor.apps.App")
 }
 
-tasks.named<Test>("test") {
+tasks.test {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()
+    testLogging {
+        events ("passed", "skipped", "failed")
+
+        outputs.upToDateWhen {false}
+        showStandardStreams = true
+        afterSuite(KotlinClosure2({ desc: TestDescriptor, result: TestResult ->
+            if (desc.parent == null) { // will match the outermost suite
+                println("Result: ${result.resultType} (${result.testCount} tests, ${result.successfulTestCount} successes, ${result.failedTestCount} failures, ${result.skippedTestCount} skipped)")
+            }
+        }))
+    }
 }
 
 tasks {

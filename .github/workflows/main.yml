@@ -18,10 +18,17 @@ jobs:
         java-version: '17'
         distribution: 'adopt'
 
-    - name: Set up Gradle 8
-      uses: gradle/gradle-build-action@v2
-      with:
-        gradle-version: '8.0'
-
     - name: Test with Gradle
-      run: ./gradlew test --info
+      run: ./gradlew test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Build Docker
+        run: docker build -t 12fa-apps .
+
+

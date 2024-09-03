@@ -13,20 +13,20 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static spark.Spark.awaitStop;
 
 class AppTest {
 
     @BeforeAll
     public static void setUp() {
-        // Start the Spark application
         App.main(null);
         Spark.awaitInitialization();
     }
 
     @AfterAll
     public static void tearDown() {
-        // Stop the Spark application
         Spark.stop();
+        awaitStop();
     }
 
     @Test
