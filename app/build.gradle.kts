@@ -65,6 +65,7 @@ tasks {
         manifest {
             attributes(mapOf("Main-Class" to "factor.apps.App"))
         }
+        minimize()
     }
 }
 

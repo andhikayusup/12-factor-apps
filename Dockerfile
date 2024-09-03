@@ -7,7 +7,7 @@ COPY /app/src ./src
 RUN gradle clean build
 
 # Stage 2: Run the application
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17.0.10_7-jre-jammy
 WORKDIR /app
 COPY --from=build /app/build/libs/shadow-all.jar app.jar
 EXPOSE 4567
