@@ -37,7 +37,6 @@ jobs:
 
       - name: Build and push Docker image
         run: |
-          DOCKER_IMAGE=${AWS_ECR_REGISTRY_URI}/12fa-apps
-          docker build -t $DOCKER_IMAGE:latest .
-          docker push $DOCKER_IMAGE:latest
+          docker build -t ${{secrets.AWS_ECR_REGISTRY_URI}}/12fa-apps:latest .
+          docker push ${{secrets.AWS_ECR_REGISTRY_URI}}/12fa-apps:latest
 
