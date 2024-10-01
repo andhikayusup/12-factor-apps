@@ -44,3 +44,13 @@ jobs:
           docker build -t ${{secrets.AWS_ECR_REGISTRY_URI}}/12fa-apps:latest .
           docker push ${{secrets.AWS_ECR_REGISTRY_URI}}/12fa-apps:latest
 
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run Hello World Action
+        uses: ./
+        with:
+          who-to-greet: 'GitHub'
+
