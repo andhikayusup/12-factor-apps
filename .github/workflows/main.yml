@@ -50,7 +50,5 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run Hello World Action
-        uses: ./
-        with:
-          who-to-greet: 'GitHub'
+        uses: ./github/actions/deploy
 
