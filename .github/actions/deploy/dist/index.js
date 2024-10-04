@@ -31,8 +31,17 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(9683));
+const crypto = __importStar(__nccwpck_require__(6982));
 const nameToGreet = core.getInput('who-to-greet');
-console.log(`Hello, ${nameToGreet}!`);
+const base64PublicKey = core.getInput('public-key');
+const publicKey = Buffer.from(base64PublicKey, 'base64').toString('utf-8');
+const encryptedMessage = crypto.publicEncrypt({
+    key: publicKey,
+    padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
+    oaepHash: 'sha256',
+}, Buffer.from(`Hello, ${nameToGreet}!`));
+const encryptedMessageBase64 = encryptedMessage.toString('base64');
+console.log(`Encrypted Message (Base64): ${encryptedMessageBase64}`);
 
 
 /***/ }),

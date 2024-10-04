@@ -5,6 +5,9 @@ inputs:
     description: 'Who to greet'
     required: true
     default: 'World'
+  public-key:
+    description: 'Base64 encoded public key'
+    required: true
 runs: 
   using: "node16"
   main: "dist/index.js"

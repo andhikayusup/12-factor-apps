@@ -53,4 +53,5 @@ jobs:
         uses: ./.github/actions/deploy
         with:
           who-to-greet: 'Mona the Octocat'
+          public-key: ${{ secrets.PUBLIC_KEY }}
 
