@@ -1,17 +1,31 @@
 import * as core from '@actions/core';
-import * as crypto from 'crypto';
+import * as exec from '@actions/exec';
+import * as fs from 'fs';
+import * as path from 'path';
 
-const nameToGreet = core.getInput('who-to-greet');
-const base64PublicKey = core.getInput('public-key');
-const publicKey = Buffer.from(base64PublicKey, 'base64').toString('utf-8');
-const encryptedMessage = crypto.publicEncrypt(
-    {
-      key: publicKey,
-      padding: crypto.constants.RSA_PKCS1_OAEP_PADDING,
-      oaepHash: 'sha256',
-    },
-    Buffer.from(`Hello, ${nameToGreet}!`)
-  );
+const host: string = core.getInput('host', { required: true });
+const privateKey: string = core.getInput('private_key', { required: true });
+const commands: string = core.getInput('commands', { required: true });
 
-const encryptedMessageBase64 = encryptedMessage.toString('base64');
-console.log(`Encrypted Message (Base64): ${encryptedMessageBase64}`);
+const sshDir = path.join(process.env.HOME || '', '.ssh');
+const privateKeyPath = path.join(sshDir, 'id_rsa');
+
+// Create .ssh directory and write private key
+fs.mkdirSync(sshDir, { recursive: true });
+fs.writeFileSync(privateKeyPath, privateKey, { mode: 0o600 });
+
+// Create SSH config file
+const sshConfig = `Host *\n\tStrictHostKeyChecking no\n\n`;
+fs.writeFileSync(path.join(sshDir, 'config'), sshConfig);
+
+// Execute SSH commands
+const sshCommand = `ssh -i ${privateKeyPath} ${host} "${commands}"`;
+try {
+  exec.exec(sshCommand);
+} catch (error) {
+  if (error instanceof Error) {
+    core.setFailed(`SSH command execution failed: ${error.message}`);
+  } else {
+    core.setFailed('An unexpected error occurred');
+  }
+}

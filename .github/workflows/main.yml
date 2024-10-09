@@ -50,9 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Run Hello World Action
+      - name: Execute SSH Commands
         uses: ./.github/actions/deploy
         with:
-          who-to-greet: 'Mona the Octocat'
-          public-key: ${{ secrets.PUBLIC_KEY }}
+          host: ${{ secrets.HOST }}
+          private_key: ${{ secrets.PRIVATE_KEY }}
+          commands: 'echo "Hello, World!" > hello.txt'
 

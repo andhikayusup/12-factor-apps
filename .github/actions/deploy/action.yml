@@ -1,12 +1,14 @@
 name: "testin"
 description: "testing"
 inputs:
-  who-to-greet:
-    description: 'Who to greet'
+  host:
+    description: 'The SSH host to connect to'
     required: true
-    default: 'World'
-  public-key:
-    description: 'Base64 encoded public key'
+  private_key:
+    description: 'The private key for SSH authentication'
+    required: true
+  commands:
+    description: 'The commands to execute on the remote host'
     required: true
 runs: 
   using: "node16"
