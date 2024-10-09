@@ -55,5 +55,5 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           private_key: ${{ secrets.PRIVATE_KEY }}
-          commands: 'echo "Hello, World!" > hello.txt'
+          commands: '"echo "Hello, World!" > hello.txt"'
 

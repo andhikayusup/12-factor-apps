@@ -34,7 +34,7 @@ const sshDir = path.join(process.env.HOME || '', '.ssh');
 const privateKeyPath = path.join(sshDir, 'id_rsa');
 // Create .ssh directory and write private key
 fs.mkdirSync(sshDir, { recursive: true });
-fs.writeFileSync(privateKeyPath, privateKey, { mode: 0o600 });
+fs.writeFileSync(privateKeyPath, privateKey, { mode: 0o400 });
 // Create SSH config file
 const sshConfig = `Host *\n\tStrictHostKeyChecking no\n\n`;
 fs.writeFileSync(path.join(sshDir, 'config'), sshConfig);
